@@ -12,7 +12,7 @@ const contactSchema = new Schema(
     },
     email: {
       type: String,
-      required: true, // Було 'requaired', але повинно бути 'required'
+      required: true,
       default: null,
     },
     isFavourite: {
@@ -22,12 +22,12 @@ const contactSchema = new Schema(
     contactType: {
       type: String,
       enum: ['work', 'home', 'personal'],
-      required: true, // Було 'requaired', але повинно бути 'required'
+      required: true,
       default: 'personal',
     },
   },
   {
-    timestamps: true, // Було 'timestrams', але повинно бути 'timestamps'
+    timestamps: true,
     versionKey: false,
   },
 );

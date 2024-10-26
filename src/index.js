@@ -1,9 +1,9 @@
-import { startServer } from "./server.js";
-import { initMongoConnection } from "./db/initMongoConnection.js";
+import { startServer } from './server.js';
+import { initMongoConnection } from './db/initMongoConnection.js';
 
 const boostrap = async () => {
-    await initMongoConnection();
-    startServer();
+  await initMongoConnection();
+  startServer();
 };
 
 boostrap();
