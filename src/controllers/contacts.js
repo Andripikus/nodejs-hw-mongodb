@@ -3,6 +3,8 @@ import {
   addContact,
   getAllContacts,
   getContactById,
+  updateContact,  // Додано для PATCH
+  deleteContact,  // Додано для DELETE
 } from '../services/contacts.js';
 
 export const getContactsControllers = async (req, res) => {
