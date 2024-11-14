@@ -3,6 +3,7 @@ import * as contactControllers from '../controllers/contacts.js';
 import ctrlWrapper from '../utils/ctrlWrapper.js';
 import { isValidId } from '../middlewares/isValidId.js';
 import { validateBody } from '../middlewares/validateBody.js';
+import { authenticate } from '../middlewares/authenticate.js';
 import {
   contactAddSchema,
   contactUpdateSchema,
@@ -10,27 +11,25 @@ import {
 
 const contactsRouter = Router();
 
-contactsRouter.get('/', ctrlWrapper(contactControllers.getContactsController));
+contactsRouter.use(authenticate);
 
+contactsRouter.get('/', ctrlWrapper(contactControllers.getContactsController));
 contactsRouter.get(
   '/:contactId',
   isValidId,
   ctrlWrapper(contactControllers.getContactByIdController),
 );
-
 contactsRouter.post(
   '/',
   validateBody(contactAddSchema),
   ctrlWrapper(contactControllers.addContactController),
 );
-
 contactsRouter.patch(
   '/:contactId',
   isValidId,
   validateBody(contactUpdateSchema),
   ctrlWrapper(contactControllers.patchContactController),
 );
-
 contactsRouter.delete(
   '/:contactId',
   isValidId,
