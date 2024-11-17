@@ -3,7 +3,6 @@ import ContactCollection from '../db/models/contact.js';
 import { calculatePaginationData } from '../utils/calculatePaginationData.js';
 import createHttpError from 'http-errors';
 
-// Отримати всі контакти користувача
 export const getAllContacts = async ({
   userId,
   page = 1,
@@ -16,7 +15,6 @@ export const getAllContacts = async ({
     const limit = perPage;
     const skip = (page - 1) * perPage;
 
-    // Фільтрація контактів за userId
     const contactsQuery = ContactCollection.find({ userId });
     if (filter.contactType) {
       contactsQuery.where('contactType').equals(filter.contactType);
@@ -49,7 +47,6 @@ export const getAllContacts = async ({
   }
 };
 
-// Отримати контакт за ідентифікатором та userId
 export const getContactById = async (contactId, userId) => {
   try {
     const contact = await ContactCollection.findOne({ _id: contactId, userId });
@@ -62,7 +59,6 @@ export const getContactById = async (contactId, userId) => {
   }
 };
 
-// Додати новий контакт з прив'язкою до userId
 export const addContact = async (payload) => {
   try {
     const contact = await ContactCollection.create(payload);
@@ -72,7 +68,6 @@ export const addContact = async (payload) => {
   }
 };
 
-// Оновити контакт за ідентифікатором та userId
 export const updateContact = async (contactId, payload, userId) => {
   try {
     const contact = await ContactCollection.findOneAndUpdate(
@@ -89,7 +84,6 @@ export const updateContact = async (contactId, payload, userId) => {
   }
 };
 
-// Видалити контакт за ідентифікатором та userId
 export const deleteContact = async (contactId, userId) => {
   try {
     const contact = await ContactCollection.findOneAndDelete({

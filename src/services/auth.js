@@ -3,7 +3,10 @@ import bcrypt from 'bcrypt';
 import UserCollection from '../db/models/user.js';
 import SessionCollection from '../db/models/session.js';
 import createHttpError from 'http-errors';
-import { accessTokenLifetime, refreshTokenLifetime } from '../constants/users.js';
+import {
+  accessTokenLifetime,
+  refreshTokenLifetime,
+} from '../constants/users.js';
 
 export const registerUser = async (payload) => {
   const existingUser = await UserCollection.findOne({ email: payload.email });
@@ -68,13 +71,16 @@ export const refreshUsersSession = async ({ sessionId, refreshToken }) => {
     throw createHttpError(401, 'Session not found');
   }
 
-  if (new Date() > new Date(session.refreshTokenValidUntil)) {
+  const isSessionTokenExpired =
+    new Date() > new Date(session.refreshTokenValidUntil);
+
+  if (isSessionTokenExpired) {
     throw createHttpError(401, 'Session token expired');
   }
 
-  await SessionCollection.deleteOne({ _id: session.id, refreshToken });
-
   const newSession = createSession();
+
+  await SessionCollection.deleteOne({ _id: session.id, refreshToken });
 
   return await SessionCollection.create({
     userId: session.userId,

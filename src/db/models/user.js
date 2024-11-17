@@ -22,7 +22,6 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-// Видаляємо пароль перед відправкою даних користувача
 userSchema.methods.toJSON = function () {
   const obj = this.toObject();
   delete obj.password;

@@ -6,7 +6,6 @@ import {
   registerUser,
 } from '../services/auth.js';
 
-// Контролер для реєстрації нового користувача
 export const registerUserController = async (req, res) => {
   const user = await registerUser(req.body);
 
@@ -17,11 +16,9 @@ export const registerUserController = async (req, res) => {
   });
 };
 
-// Контролер для входу користувача
 export const loginUserController = async (req, res) => {
   const session = await loginUser(req.body);
 
-  // Встановлення рефреш-токена та sessionId в куки
   res.cookie('refreshToken', session.refreshToken, {
     httpOnly: true,
     expires: new Date(Date.now() + refreshTokenLifetime),
@@ -40,20 +37,17 @@ export const loginUserController = async (req, res) => {
   });
 };
 
-// Контролер для виходу користувача
 export const logoutUserController = async (req, res) => {
   if (req.cookies.sessionId) {
     await logoutUser(req.cookies.sessionId);
   }
 
-  // Очищення куків при виході
   res.clearCookie('sessionId');
   res.clearCookie('refreshToken');
 
   res.status(204).send();
 };
 
-// Встановлення нових куків сесії
 const setupSession = (res, session) => {
   res.cookie('refreshToken', session.refreshToken, {
     httpOnly: true,
@@ -65,7 +59,6 @@ const setupSession = (res, session) => {
   });
 };
 
-// Контролер для оновлення сесії
 export const refreshUserSessionController = async (req, res) => {
   const session = await refreshUsersSession({
     sessionId: req.cookies.sessionId,
