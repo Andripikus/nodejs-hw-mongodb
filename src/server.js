@@ -3,17 +3,25 @@ import pino from 'pino-http';
 import cors from 'cors';
 import { env } from './utils/env.js';
 import contactsRouter from './routers/contacts.js';
-import authRouter from "./routers/auth.js";
+import authRouter from './routers/auth.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import cookieParser from 'cookie-parser';
+import { UPLOAD_DIR } from './constants/index.js';
 
 const PORT = Number(env('PORT', '3000'));
 console.log(PORT);
 
 export const startServer = () => {
   const app = express();
-  app.use(express.json());
+  app.use(
+    express.json({
+      type: ['application/json', 'application/vnd.api+json'],
+      limit: '100kb',
+    }),
+  );
+  app.use('/uploads', express.static(UPLOAD_DIR));
+  
   app.use(cookieParser());
 
   app.use(cors());
@@ -26,7 +34,7 @@ export const startServer = () => {
     }),
   );
 
-  app.use("/auth", authRouter);
+  app.use('/auth', authRouter);
 
   app.use('/contacts', contactsRouter);
 
